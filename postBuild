@@ -3,7 +3,3 @@
 pip install https://github.com/jupyterhub/nbserverproxy/archive/master.zip
 jupyter serverextension enable --py nbserverproxy
 
-
-wget https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_386.tar.gz
-tar -xzvf gotty_2.0.0-alpha.3_linux_386.tar.gz
-
