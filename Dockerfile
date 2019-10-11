@@ -11,6 +11,19 @@ RUN yum install -y \
     python3-pip \
     yum-plugin-priorities
 
+
+RUN yum -y install openssh-server passwd sudo
+ARG NB_USER=jovyan
+ARG NB_UID=1000
+ENV USER ${NB_USER}
+ENV HOME /home/${NB_USER}
+ENV SHELL bash
+ENV PS1 "$JUPYTERHUB_USER \w $ "
+RUN adduser --uid ${NB_UID} ${NB_USER} && echo "1234" | passwd --stdin ${NB_USER}
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' 
+RUN chown ${USER} -R /etc/ssh
+RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 # Cleanup caches to reduce image size
 RUN yum clean all
 
@@ -26,8 +39,6 @@ ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 ENV SHELL bash
 ENV PS1 "$JUPYTERHUB_USER \w $ "
-
-RUN adduser --uid ${NB_UID} ${NB_USER} && passwd -d ${NB_USER}
 
 WORKDIR ${HOME}
 USER ${USER}
